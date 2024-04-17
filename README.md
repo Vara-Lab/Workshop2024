@@ -106,59 +106,43 @@ extern "C" fn init() {
 ```rust
 #[async_main]
 async fn main() {
-    
     // We load the input message
     let action: TrafficLightAction = msg::load().expect("Could not load Action");
 
     let state = unsafe { STATE.as_mut().expect("Unexpected error in factory_state") };
 
     // We receive an action from the user and update the state. Example:
-    match action {
+    let result: TrafficLightEvent = match action {
         TrafficLightAction::Green => {
-
-
             state.current_light = "Green".to_string();
 
             // Update your second field in state.
             state.all_users.insert(msg::source(), "Green".to_string());
 
-
-             // Generate your event.
-             let _ =msg::reply(TrafficLightEvent::Green,0);
-
-
+            TrafficLightEvent::Green
         }
         TrafficLightAction::Yellow => {
-
-
-            // Update your first field in state.       
+            // Update your first field in state.
             state.current_light = "Yellow".to_string();
 
             // Update your second field in state.
             state.all_users.insert(msg::source(), "Yellow".to_string());
 
-
-             // Generate your event.
-             let _ =msg::reply(TrafficLightEvent::Yellow,0);
-
-           
-
+            TrafficLightEvent::Yellow
         }
         TrafficLightAction::Red => {
-           
-            
-           // Update your first field in state.       
-           state.current_light = "Red".to_string();
+            // Update your first field in state.
+            state.current_light = "Red".to_string();
 
-           // Update your second field in state.
-           state.all_users.insert(msg::source(), "Red".to_string());
-
+            // Update your second field in state.
+            state.all_users.insert(msg::source(), "Red".to_string());
 
             // Generate your event.
-            let _ =msg::reply(TrafficLightEvent::Red,0);
+            TrafficLightEvent::Red
         }
-
     };
+
+    msg::reply(result, 0).expect("Failed to encode or reply");
 }
 
 ```
@@ -192,3 +176,51 @@ pub mod metafns {
 ```
 
 ## Despliega el contrato en la plataforma IDEA e interactua con tu contrato.
+
+## Integración con el Frontend: Semáforo
+
+## Prerequisites
+
+Make sure you have the following dependencies installed before starting:
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/) (Node.js package manager)
+
+# 1. Inicio: Clonar el template para frontend
+
+1. Clone this repository to your local machine:
+
+    ```bash
+    git clone https://github.com/Vara-Lab/Integration-Kit.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```bash
+    cd Integration-Kit/Chakra-UI-Vite-Template
+    ```
+
+3. Install the dependencies:
+
+    ```bash
+    yarn install
+    ```
+4. Start the project on localhost:
+
+    ```bash
+    yarn start
+   ```
+
+# 2. Ingresar al home y actualizar la metadata y programID de los componentes de React:
+
+```jsx
+// Add your programID
+  const programIDFT ="your programID";
+
+// Add your metadata.txt
+ const meta ="your metadata";
+
+```
+
+# 3. Usa los botones para interactuar con tu contrato inteligente en Vara Network.
+
+# Felicidades ya tienes tu primer contrato inteligente integrado a Vara Network.  
