@@ -146,6 +146,39 @@ async fn main() {
 }
 
 ```
+### PASO 5 Definir en el interior de la función state.
+
+```rust
+#[no_mangle]
+extern "C" fn state() {
+    let state = unsafe { STATE.take().expect("Unexpected error in taking state") };
+
+    msg::reply::<IoTrafficLightState>(state.into(), 0).expect(
+        "Failed to encode or reply with `<ContractMetadata as Metadata>::State` from `state()`",
+    );
+}
+
+// Implementation of the From trait for converting CustomStruct to IoCustomStruct
+impl From<TrafficLightState> for IoTrafficLightState {
+    // Conversion method
+    fn from(value: TrafficLightState) -> Self {
+        // Destructure the CustomStruct object into its individual fields
+        let TrafficLightState {
+            current_light,
+            all_users,
+        } = value;
+
+        // Perform some transformation on second field, cloning its elements (Warning: Just for HashMaps!!)
+        let all_users = all_users.iter().map(|(k, v)| (*k, v.clone())).collect();
+
+        // Create a new IoCustomStruct object using the destructured fields
+        Self {
+            current_light,
+            all_users,
+        }
+    }
+}
+```
 
 ## Directorio State
 
