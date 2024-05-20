@@ -4,7 +4,7 @@
 
 **comando:**
 ```bash
-git clone https://github.com/Vara-Lab/AsynchronousContractTemplate.git
+git clone https://github.com/Vara-Lab/Smart-Contract-Template.git
 ```
 
 ## Directorio IO
