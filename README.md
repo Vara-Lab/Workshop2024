@@ -46,9 +46,9 @@ pub struct IoTrafficLightState {
     pub all_users: Vec<(ActorId, String)>,
 }
 
-pub struct ContractMetadata;
+pub struct ProgramMetadata;
 
-impl Metadata for ContractMetadata {
+impl Metadata for ProgramMetadata {
     type Init = ();
     type Handle = InOut<TrafficLightAction, TrafficLightEvent>;
     type Others = ();
@@ -195,7 +195,7 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 #[metawasm]
 pub mod metafns {
-    pub type State = <ContractMetadata as Metadata>::State;
+    pub type State = <ProgramMetadata as Metadata>::State;
 
 
     // Add your State functions
